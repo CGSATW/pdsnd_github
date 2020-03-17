@@ -10,6 +10,10 @@ CITY_DATA = { 'chicago': 'chicago.csv',
 
 # calculates time data for month and day
 def calculate_time_data(df, column, time_dict):
+    """
+    Args:
+    Returns:
+    """
     time_series = df[column].value_counts(sort=True)
     time_int = time_series.first_valid_index()
     time_name = str(time_dict[time_int])
@@ -19,6 +23,10 @@ def calculate_time_data(df, column, time_dict):
 
 # calculates hour, station, and birth year data
 def calculate_name_events_data(df, column):
+    """
+    Args:
+    Returns:
+    """
     entity_series = df[column].value_counts(sort=True)
     entity_name = entity_series.first_valid_index()
     entity_events = entity_series[entity_series.first_valid_index()]
@@ -27,6 +35,10 @@ def calculate_name_events_data(df, column):
 
 # calculates user data for type and gender
 def calculate_user_data(df, column):
+    """
+    Args:
+    Returns:
+    """
     user_series = df[column].value_counts(sort=True)
     user_tuples = user_series.iteritems()
     return user_tuples
@@ -132,6 +144,10 @@ def load_data(CITY_DATA, city, month, day):
 
 # displays statistics on the most frequent times of travel
 def time_stats(df, month, day, city):
+    """
+    Args:
+        
+    """
     month_name = { 1: 'january',
                       2: 'february',
                       3: 'march',
@@ -186,6 +202,10 @@ def time_stats(df, month, day, city):
 
 # displays statistics on the most popular stations and trip
 def station_stats(df):
+    """
+    Args:
+
+    """
     print(('-'*70) + '\n\nCalculating The Most Popular Stations and Trip... [Frame 2 of 4]\n')
     start_time = time.time()
 
@@ -213,6 +233,10 @@ def station_stats(df):
 
 # displays statistics on the total and average trip duration
 def trip_duration_stats(df):
+    """
+    Args:
+
+    """
     print(('-'*70) + '\n\nCalculating Trip Duration... [Frame 3 of 4]\n')
     start_time = time.time()
 
@@ -234,6 +258,10 @@ def trip_duration_stats(df):
 
 # displays statistics on bikeshare users
 def user_stats(df):
+    """
+    Args:
+
+    """
     print(('-'*70) + '\n\nCalculating User Stats... [Frame 4 of 4]\n')
     start_time = time.time()
 
