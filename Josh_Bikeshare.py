@@ -53,7 +53,7 @@ def get_filters():
         if city in city_list:
             break
         else:
-            print('Please input a correct city option.\n')
+            print('Please input a city name from the list of options.\n')
             continue
 
     # filter on month
@@ -62,7 +62,7 @@ def get_filters():
         if month in month_list:
             break
         else:
-            print('Please input a correct month option.\n')
+            print('Please input a month name from the list of options.\n')
             continue
 
     # filter on day
@@ -71,7 +71,7 @@ def get_filters():
         if day in day_list:
             break
         else:
-            print('Please input a correct day option.\n')
+            print('Please input a day of the week from the list of options.\n')
             continue
 
     # display filters
