@@ -8,8 +8,8 @@ CITY_DATA = { 'chicago': 'chicago.csv',
               'washington': 'washington.csv' }
 
 
+# calculates time data for month and day
 def calculate_time_data(df, column, time_dict):
-    """Calculates time datafor month and day"""
     time_series = df[column].value_counts(sort=True)
     time_int = time_series.first_valid_index()
     time_name = str(time_dict[time_int])
@@ -17,25 +17,24 @@ def calculate_time_data(df, column, time_dict):
     return time_name, time_events
 
 
+# calculates hour, station, and birth year data
 def calculate_name_events_data(df, column):
-    """"Calculates hour, station, and birth year data"""
     entity_series = df[column].value_counts(sort=True)
     entity_name = entity_series.first_valid_index()
     entity_events = entity_series[entity_series.first_valid_index()]
     return entity_name, entity_events
 
 
+# calculates user data for type and gender
 def calculate_user_data(df, column):
-    """calculates user data for type and gender"""
     user_series = df[column].value_counts(sort=True)
     user_tuples = user_series.iteritems()
     return user_tuples
 
 
+# asks user to specify a city, month, and day to analyze
 def get_filters():
     """
-    Asks user to specify a city, month, and day to analyze.
-
     Returns:
         (str) city - name of the city to analyze
         (str) month - name of the month to filter by, or "all" to apply no month filter
@@ -81,10 +80,9 @@ def get_filters():
     return city, month, day
 
 
+# loads data for the specified city and filters by month and day if applicable
 def load_data(CITY_DATA, city, month, day):
     """
-    Loads data for the specified city and filters by month and day if applicable.
-
     Args:
         (str) city - name of the city to analyze
         (str) month - name of the month to filter by, or "all" to apply no month filter
@@ -128,12 +126,12 @@ def load_data(CITY_DATA, city, month, day):
         df = df[df['Month'] == month_numeric[month]]
     if day != 'all':
         df = df[df['Day of Week'] == day_numeric[day]]
- 
+
     return df
 
-    
+
+# displays statistics on the most frequent times of travel
 def time_stats(df, month, day, city):
-    """Displays statistics on the most frequent times of travel."""
     month_name = { 1: 'january',
                       2: 'february',
                       3: 'march',
@@ -159,13 +157,13 @@ def time_stats(df, month, day, city):
 
     # calculate the most common month given no month filter ie. month filter of 'all'
     most_common_month_name, number_month_events = calculate_time_data(df, 'Month', month_name)
-        
+
     # calculate the most common day of week
     most_common_day_name, number_day_events = calculate_time_data(df, 'Day of Week', day_name)
-        
+
     # calculate the most common start hour
     most_common_start_hour_int, number_start_hour_events = calculate_name_events_data(df, 'Start Hour')
-    
+
     # print calculation messages
     # print month and day data
     if month != 'all' and day != 'all':
@@ -186,18 +184,17 @@ def time_stats(df, month, day, city):
     print('\n' + ('-'*70))
 
 
+# displays statistics on the most popular stations and trip
 def station_stats(df):
-    """Displays statistics on the most popular stations and trip."""
-
     print(('-'*70) + '\n\nCalculating The Most Popular Stations and Trip... [Frame 2 of 4]\n')
     start_time = time.time()
-    
+
     # calculate most commonly used start station
     most_common_start_station, most_common_start_station_events = calculate_name_events_data(df, 'Start Station')
 
     # calculate most commonly used end station
     most_common_end_station, most_common_end_station_events = calculate_name_events_data(df, 'End Station')
-    
+
     # calculate most frequent combination of start station and end station trip
     df['Trips'] = df['Start Station'] + ' to ' + df['End Station']
     most_common_trips_name, most_common_trips_events = calculate_name_events_data(df, 'Trips')
@@ -214,9 +211,8 @@ def station_stats(df):
     print('\n' + ('-'*70))
 
 
+# displays statistics on the total and average trip duration
 def trip_duration_stats(df):
-    """Displays statistics on the total and average trip duration."""
-
     print(('-'*70) + '\n\nCalculating Trip Duration... [Frame 3 of 4]\n')
     start_time = time.time()
 
@@ -236,15 +232,14 @@ def trip_duration_stats(df):
     print('\n' + ('-'*70))
 
 
+# displays statistics on bikeshare users
 def user_stats(df):
-    """Displays statistics on bikeshare users."""
-
     print(('-'*70) + '\n\nCalculating User Stats... [Frame 4 of 4]\n')
     start_time = time.time()
 
     # calculate counts of user types
     user_types_tuples = calculate_user_data(df, 'User Type')
-    
+
     # calculate counts of gender
     user_gender_tuples = calculate_user_data(df, 'Gender')
 
@@ -262,11 +257,11 @@ def user_stats(df):
     # print user type
     print('\n\nUser type statistics:')
     for a, b in user_types_tuples:
-        print('\nThere was/were ' + str(b) + ' users of the \"' + str(a) + '\" user type.') 
+        print('\nThere was/were ' + str(b) + ' users of the \"' + str(a) + '\" user type.')
     # print gender type
     print('\n\nUser gender statistics:')
     for a, b in user_gender_tuples:
-        print('\nThere was/were ' + str(b) + ' users that were ' + str(a) + '.') 
+        print('\nThere was/were ' + str(b) + ' users that were ' + str(a) + '.')
     # print birth years
     print('\n\nUser birth year statistics:')
     print('\nThe earliest user birth year was {}.'.format(most_early_birth_year))
@@ -277,12 +272,13 @@ def user_stats(df):
     print('\n' + ('-'*70))
 
 
+# main function
 def main():
     while True:
         city, month, day = get_filters()
-        
+
         df = load_data(CITY_DATA, city, month, day)
-        
+
         # check to see if filtered results returned data, otherwise, exit script
         if df.empty:
             print('\nThere are no results for {} filtered by month: {} and day: {}. Sorry! :-|'.format(city.title(), month.title(), day.title()))
